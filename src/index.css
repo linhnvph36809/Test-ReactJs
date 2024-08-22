@@ -1,0 +1,73 @@
+@import "tailwindcss/base";
+@import "tailwindcss/components";
+@import "tailwindcss/utilities";
+
+html {
+  font-family: "Nunito", sans-serif;
+  font-optical-sizing: auto;
+  font-style: normal;
+  font-weight: 400;
+  line-height: 1.5;
+  tab-size: 4;
+}
+
+h1,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Open Sans", sans-serif;
+  font-variation-settings: "wdth" 100;
+  font-weight: 700;
+}
+
+.font-button {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 700;
+}
+
+.color-primary {
+  color: #4b5d68;
+}
+
+.bg-primary {
+  background-color: #9c69e2;
+}
+
+.title-color {
+  color: #212353;
+}
+
+.mySlider {
+  border-radius: 20px;
+}
+
+.mySlider .swiper-slide {
+  height: 500px;
+}
+
+.swiper-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-pagination-bullet {
+  background-color: #ffffff;
+  width: 8px;
+  height: 8px;
+}
+
+.swiper-pagination-bullet-active {
+  width: 10px;
+  height: 10px;
+  background-color: #f063b8 !important;
+}
+
+.profile__table tr td {
+  border: 1px solid #000;
+  background-color: #d9d9d9;
+  padding: 12px 40px;
+}
+
