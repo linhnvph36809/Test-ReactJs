@@ -81,3 +81,67 @@ export const ICON_MENU = (
     <path d="M16 132h416c8.837 0 16-7.163 16-16V76c0-8.837-7.163-16-16-16H16C7.163 60 0 67.163 0 76v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16zm0 160h416c8.837 0 16-7.163 16-16v-40c0-8.837-7.163-16-16-16H16c-8.837 0-16 7.163-16 16v40c0 8.837 7.163 16 16 16z" />
   </svg>
 );
+
+export const ICON_DELETE = (
+  <svg
+    width={29}
+    height={23}
+    viewBox="0 0 29 23"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+  >
+    <rect width={29} height={23} fill="url(#pattern0_1536_456)" />
+    <defs>
+      <pattern
+        id="pattern0_1536_456"
+        patternContentUnits="objectBoundingBox"
+        width={1}
+        height={1}
+      >
+        <use
+          xlinkHref="#image0_1536_456"
+          transform="matrix(0.0416667 0 0 0.0525362 0 -0.130435)"
+        />
+      </pattern>
+      <image
+        id="image0_1536_456"
+        width={24}
+        height={24}
+        xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABgAAAAYCAYAAADgdz34AAAABmJLR0QA/wD/AP+gvaeTAAAAhElEQVRIie2TwQnAIAxF35Klh3YBdxDqPh3HQdq7gj00ooi3xkvxQ0BzeD8JfJh6ZYEbWEfAHZCkIrCPgAfgrN4qm9STG+llk0sTngAvJkH+VgMeBOobM6cFz3c22vAIbNJbKGc5JnzCfwCHEpgcorWCfwpRawDKk7cGdanBewaq8KmuHlYrZbGe+TNUAAAAAElFTkSuQmCC"
+      />
+    </defs>
+  </svg>
+);
+
+export const ICON_UPDATE = (
+  <svg
+    width={37}
+    height={29}
+    viewBox="0 0 37 29"
+    fill="none"
+    xmlns="http://www.w3.org/2000/svg"
+    xmlnsXlink="http://www.w3.org/1999/xlink"
+  >
+    <rect width={37} height={29} fill="url(#pattern0_1536_457)" />
+    <defs>
+      <pattern
+        id="pattern0_1536_457"
+        patternContentUnits="objectBoundingBox"
+        width={1}
+        height={1}
+      >
+        <use
+          xlinkHref="#image0_1536_457"
+          transform="matrix(0.0333333 0 0 0.0425287 0 -0.137931)"
+        />
+      </pattern>
+      <image
+        id="image0_1536_457"
+        width={30}
+        height={30}
+        xlinkHref="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAABmJLR0QA/wD/AP+gvaeTAAAAtElEQVRIie2VQQ6CQAxFX8R7uPM4xsPgCTmFSzW6niUGBTezMnawLTIQecks+1+bzgD8G4Wjdg9sgeNAvXzNHah/Fb6L4Z3y1LFWTWWQSaf6JFhZulLSjeCYOQH/foMUntrx2d87p1xiMWOS4ssAYjFjkhNnE4s3UoEpowAa7G+4AdZSeGriJ3CzdBy5Ag+LGHx7TtYu4nc8H5FkbbaJ+9gALfqn1MZaFwd0/+YAlF7pwvx5Abo6e/T2cOSLAAAAAElFTkSuQmCC"
+      />
+    </defs>
+  </svg>
+);
