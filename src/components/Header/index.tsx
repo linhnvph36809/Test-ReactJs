@@ -2,9 +2,13 @@ import { useState } from "react";
 import ButtonPrimary from "../ButtonPrimary";
 import { ICON_LOGO, ICON_MENU } from "../../datas";
 import { Link } from "react-router-dom";
+import useAuth from "../../hooks/useAuth";
 
 const Header = () => {
+  const { logout } = useAuth();
   const [isActive, setIsAactive] = useState<boolean>(false);
+  const token = localStorage.getItem("token");
+
   return (
     <>
       <header
@@ -16,11 +20,22 @@ const Header = () => {
         <div className="container flex justify-between items-center relative sm:py-12 lg:py-0">
           <div>{ICON_LOGO}</div>
           <div className="lg:flex gap-x-[32px] sm:hidden">
-            <ButtonPrimary title="Profile" typeElement="button" />
-            <ButtonPrimary title="Logout" typeElement="button" />
-            <Link to='/sign-in'>
-            <ButtonPrimary title="Sign In" typeElement="button" />
-            </Link>
+            {token ? (
+              <>
+                <Link to="/profile">
+                  <ButtonPrimary title="Profile" typeElement="button" />
+                </Link>
+                <ButtonPrimary
+                  title="Logout"
+                  typeElement="button"
+                  onClick={logout}
+                />
+              </>
+            ) : (
+              <Link to="/sign-in">
+                <ButtonPrimary title="Sign In" typeElement="button" />
+              </Link>
+            )}
           </div>
           <div
             className="lg:hidden"

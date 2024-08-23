@@ -4,8 +4,24 @@ import "swiper/css";
 import "swiper/css/pagination";
 
 import { Pagination, Navigation } from "swiper/modules";
+import { useEffect, useState } from "react";
+import instance from "../../axios/instance";
+import { IGalleries } from "../../interfaces/IGalleries";
 
 export default function Slider() {
+  const [galleries, setGalleries] = useState<IGalleries[]>([]);
+  useEffect(() => {
+    const handlerGetGalleries = async () => {
+      try {
+        const { data } = await instance.get("/galleries");
+        setGalleries(data);
+      } catch (error) {
+        console.log((error as any).message);
+      }
+    };
+    handlerGetGalleries();
+  }, []);
+
   return (
     <>
       <Swiper
@@ -19,50 +35,31 @@ export default function Slider() {
         modules={[Pagination, Navigation]}
         className="mySlider"
       >
-        <SwiperSlide className="flex justify-center items-center">
-          <div className="flex xl:gap-x-[43px] sm:gap-8 items-start w-[931px] min-h-[330px] bg-white xl:py-[60px] xl:px-[100px] sm:py-8 sm:px-10 rounded-[20px]">
-            <div className="">
-              <img
-                src="https://s3-alpha-sig.figma.com/img/515d/ff9e/da4d74b6ffcfa490d831317ff20eb608?Expires=1725235200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=QDorllztfRuIfJzF2HT~XowQl8ESNYGiqtlTebIoWIi-J3Zetvfy8OgDk~u~FphuhLpS~IfyicR~cG~PABtLPuUOpcWOk1oTWVVgmqehSqNQroadc3yeQ0uqLtGt5mvHU2SiLinSbz9qac23qm9wz5JUj4e-8DK6UFtiiRRYUkH5FiogYz-KvZ4j0mveipjws1QHcfbKia1mG8Qbe0-oWvRHCh4XKrlsKqwRJtJRM5bQBfisAXyO6uTaO0GtqUcI2j-gH2nt2NQfuLl8O0gA9rXg4TpAvwaxtGqEEdGsDThMqwsbQB3-uI5qF9oSNkYDzEQEonWrILIdI5jqAuv9UQ__"
-                alt=""
-                className="xl:w-[130px] xl:h-[90px] object-cover rounded-[100%]"
-              />
+        {galleries.map((gallerie: IGalleries) => (
+          <SwiperSlide
+            key={gallerie.id}
+            className="flex justify-center items-center"
+          >
+            <div className="flex sm:flex-col md:flex-row xl:gap-x-[43px] sm:gap-8 items-start w-[931px] h-[330px] bg-white xl:py-[60px] xl:px-[100px] sm:py-8 sm:px-10 rounded-[20px]">
+              <div className="">
+                <img
+                  src={gallerie.imageUrl}
+                  className="xl:w-[130px] xl:h-[90px] object-cover rounded-[100%]"
+                  alt="Error"
+                />
+              </div>
+              <div>
+                <h3 className="title-color text-lg">John Fang </h3>
+                <p className="text-sm font-medium text-[#9c69e2] mb-4">
+                  wordfaang.com
+                </p>
+                <p className="color-primary sm:text-sm md:text-lg">
+                  {gallerie.desctiption}
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="title-color text-lg">John Fang </h3>
-              <p className="text-sm font-medium text-[#9c69e2] mb-4">
-                wordfaang.com
-              </p>
-              <p className="max-w-[382px] color-primary text-lg">
-                Suspendisse ultrices at diam lectus nullam. Nisl, sagittis
-                viverra enim erat tortor ultricies massa turpis. Arcu pulvinar
-                aenean nam laoreet nulla.
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
-        <SwiperSlide className="flex justify-center items-center">
-          <div className="flex xl:gap-x-[43px] sm:gap-8 items-start w-[931px] min-h-[330px] bg-white xl:py-[60px] xl:px-[100px] sm:py-8 sm:px-10 rounded-[20px]">
-            <div className="">
-              <img
-                src="https://s3-alpha-sig.figma.com/img/515d/ff9e/da4d74b6ffcfa490d831317ff20eb608?Expires=1725235200&Key-Pair-Id=APKAQ4GOSFWCVNEHN3O4&Signature=QDorllztfRuIfJzF2HT~XowQl8ESNYGiqtlTebIoWIi-J3Zetvfy8OgDk~u~FphuhLpS~IfyicR~cG~PABtLPuUOpcWOk1oTWVVgmqehSqNQroadc3yeQ0uqLtGt5mvHU2SiLinSbz9qac23qm9wz5JUj4e-8DK6UFtiiRRYUkH5FiogYz-KvZ4j0mveipjws1QHcfbKia1mG8Qbe0-oWvRHCh4XKrlsKqwRJtJRM5bQBfisAXyO6uTaO0GtqUcI2j-gH2nt2NQfuLl8O0gA9rXg4TpAvwaxtGqEEdGsDThMqwsbQB3-uI5qF9oSNkYDzEQEonWrILIdI5jqAuv9UQ__"
-                alt=""
-                className="xl:w-[130px] xl:h-[90px] object-cover rounded-[100%]"
-              />
-            </div>
-            <div>
-              <h3 className="title-color text-lg">John Fang </h3>
-              <p className="text-sm font-medium text-[#9c69e2] mb-4">
-                wordfaang.com
-              </p>
-              <p className="max-w-[382px] color-primary text-lg">
-                Suspendisse ultrices at diam lectus nullam. Nisl, sagittis
-                viverra enim erat tortor ultricies massa turpis. Arcu pulvinar
-                aenean nam laoreet nulla.
-              </p>
-            </div>
-          </div>
-        </SwiperSlide>
+          </SwiperSlide>
+        ))}
         <div
           className="swiper-button-prev absolute hover:cursor-pointer z-[100]
           left-10 xl:top-1/2 xl:clear-end sm:bottom-0"

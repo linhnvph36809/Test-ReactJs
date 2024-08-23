@@ -1,35 +1,22 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import { ICON_LOGO } from "../../datas";
-import { useNavigate } from "react-router-dom";
-import instance from "../../axios/instance";
+import useAuth from "../../hooks/useAuth";
 
 type LoginType = {
   username: string;
 };
 
 const SignIn = () => {
-  const navigate = useNavigate();
+  const { login } = useAuth();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
   } = useForm<LoginType>();
 
-  const onSubmit: SubmitHandler<LoginType> = async (data) => {
-    try {
-      const { data: res } = await instance.post("/auth/login", data);
-      if (res?.accessToken && res?.refreshToken) {
-        localStorage.setItem("token", res.accessToken);
-        navigate("/profile");
-      } else {
-        alert("Dang nhap that bai");
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
+  const onSubmit: SubmitHandler<LoginType> = async (data) => login(data);
   return (
     <>
       <section>

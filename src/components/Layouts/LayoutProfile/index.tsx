@@ -1,9 +1,11 @@
 import { useState } from "react";
-import { Outlet } from "react-router-dom";
+import { Link, Outlet } from "react-router-dom";
 import { ICON_LOGO, ICON_MENU } from "../../../datas";
+import useAuth from "../../../hooks/useAuth";
 
 const LayoutProfile = () => {
   const [isActive, setIsActive] = useState<boolean>(false);
+  const { logout } = useAuth();
 
   return (
     <>
@@ -16,13 +18,14 @@ const LayoutProfile = () => {
           <div className="flex justify-center mb-6">{ICON_LOGO}</div>
           <div>
             <ul className="px-6">
-              <li>
+              <Link to="">
                 <a href="" className="block py-2">
                   Posts
                 </a>
-              </li>
+              </Link>
+
               <li>
-                <a href="" className="block py-2">
+                <a href="#" className="block py-2" onClick={logout}>
                   Logout
                 </a>
               </li>
@@ -35,7 +38,7 @@ const LayoutProfile = () => {
         >
           {ICON_MENU}
         </div>
-        <main className="flex-1 xl:ml-[320px] xl:p-[120px]">
+        <main className="flex-1 xl:ml-[300px] xl:p-[120px]">
           <Outlet />
         </main>
       </div>

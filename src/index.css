@@ -65,9 +65,16 @@ h6 {
   background-color: #f063b8 !important;
 }
 
-.profile__table tr td {
-  border: 1px solid #000;
-  background-color: #d9d9d9;
-  padding: 12px 40px;
+.loading-transtion {
+  animation: loading 0.5s linear;
 }
 
+@keyframes loading {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}

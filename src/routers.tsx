@@ -1,4 +1,4 @@
-import { createBrowserRouter } from "react-router-dom";
+import { Navigate, useRoutes } from "react-router-dom";
 import HomePages from "./pages/HomePages";
 
 import SignIn from "./pages/SignIn";
@@ -8,39 +8,45 @@ import LayoutProfile from "./components/Layouts/LayoutProfile";
 import AddPost from "./pages/Profile/AddPost";
 import UpdatePost from "./pages/Profile/UpdatePost";
 
-const router = createBrowserRouter([
-  {
-    path: "",
-    element: <LayoutClient />,
-    children: [
-      {
-        path: "",
-        element: <HomePages />,
-      },
-    ],
-  },
-  {
-    path: "sign-in",
-    element: <SignIn />,
-  },
-  {
-    path: "profile",
-    element: <LayoutProfile />,
-    children: [
-      {
-        path: "",
-        element: <Profile />,
-      },
-      {
-        path: "add",
-        element: <AddPost />,
-      },
-      {
-        path: "edit/:id",
-        element: <UpdatePost />,
-      },
-    ],
-  },
-]);
+const Router = () => {
+  const token = localStorage.getItem("token");
+  
+  const router = useRoutes([
+    {
+      path: "",
+      element: <LayoutClient />,
+      children: [
+        {
+          path: "",
+          element: <HomePages />,
+        },
+      ],
+    },
+    {
+      path: "sign-in",
+      element: <SignIn />,
+    },
+    {
+      path: "profile",
+      element: token ? <LayoutProfile /> : <Navigate to="/sign-in" />,
+      children: [
+        {
+          path: "",
+          element: <Profile />,
+        },
+        {
+          path: "add",
+          element: <AddPost />,
+        },
+        {
+          path: "edit/:id",
+          element: <UpdatePost />,
+        },
+      ],
+    },
+  ]);
 
-export default router;
+  return router;
+};
+
+export default Router;
