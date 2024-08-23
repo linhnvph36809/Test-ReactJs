@@ -2,9 +2,58 @@ import { Link } from "react-router-dom";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import usePost from "../../hooks/usePosts";
 import { ICON_DELETE, ICON_UPDATE } from "../../datas";
+import { ReactNode, useState } from "react";
 
 const Profile = () => {
-  const { posts, tags, deletePost } = usePost();
+  const { posts, tags, paginations, deletePost, getPostsByFilter } = usePost();
+  const [search, setSearch] = useState<{ title: string; tags: string }>({
+    title: "",
+    tags: "",
+  });
+  const innitPage = 1;
+  const paginationList: ReactNode[] = [];
+
+  const handlerListPaginations = () => {
+    for (let i = innitPage; i <= paginations.total_page; i++) {
+      paginationList.push(
+        <li>
+          <a
+            href="#"
+            className={`block size-8 rounded border ${
+              i === paginations.current_page
+                ? "border-blue-500 bg-blue-500 text-white"
+                : "border-gray-100 bg-white text-gray-900"
+            }
+            text-center leading-8 `}
+            onClick={() =>
+              getPostsByFilter(
+                `${search.title ? "title=" + search.title : ""}`,
+                `${search.tags ? "tags=" + search.tags : ""}`,
+                `page=${i}`
+              )
+            }
+          >
+            {i}
+          </a>
+        </li>
+      );
+    }
+  };
+  handlerListPaginations();
+
+  const handlerSearchInput = (value: string) => {
+    setSearch((state) => ({ ...state, title: value }));
+    getPostsByFilter(
+      `title=${value}`,
+      `${search.tags ? "tags=" + search.tags : ""}`,
+      ""
+    );
+  };
+
+  const handlerSearchSelect = (value: string) => {
+    setSearch((state) => ({ ...state, tags: value }));
+    getPostsByFilter("title=" + search.title, `tags=${value}`, "");
+  };
 
   return (
     <>
@@ -26,13 +75,14 @@ const Profile = () => {
                 className="xl:w-[368px] sm:h-[30px] md:h-[49px] bg-gray-50 border border-black 
                 text-black text-[15px] rounded-[6px] lg:px-8 sm:px-3"
                 placeholder="John"
+                onChange={(e) => handlerSearchInput(e.target.value)}
               />
 
               <select
                 id="countries"
                 className="xl:w-[368px] sm:h-[30px] md:h-[49px] flex-1 bg-gray-50 border border-black 
                 text-black text-[15px] rounded-[6px] p-2.5"
-                onChange={(e) => console.log(e.target.value)}
+                onChange={(e) => handlerSearchSelect(e.target.value)}
               >
                 <option value={""}>Choose a tags</option>
                 {tags.map((tag, i) => (
@@ -103,77 +153,75 @@ const Profile = () => {
                   </tbody>
                 </table>
               </div>
-              <div className="rounded-b-lg border-t border-gray-200 px-4 py-2">
-                <ol className="flex justify-end gap-1 text-xs font-medium">
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Prev Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
+              {paginations.total_page > 1 ? (
+                <div className="rounded-b-lg border-t border-gray-200 px-4 py-2">
+                  <ol className="flex justify-end gap-1 text-xs font-medium">
+                    {paginations.current_page != innitPage && (
+                      <li
+                        onClick={() =>
+                          getPostsByFilter(
+                            "",
+                            "",
+                            `page=${paginations.current_page - 1}`
+                          )
+                        }
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
-                    >
-                      1
-                    </a>
-                  </li>
-                  <li className="block size-8 rounded border-blue-600 bg-blue-600 text-center leading-8 text-white">
-                    2
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
-                    >
-                      3
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="block size-8 rounded border border-gray-100 bg-white text-center leading-8 text-gray-900"
-                    >
-                      4
-                    </a>
-                  </li>
-                  <li>
-                    <a
-                      href="#"
-                      className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
-                    >
-                      <span className="sr-only">Next Page</span>
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        className="size-3"
-                        viewBox="0 0 20 20"
-                        fill="currentColor"
+                        <a
+                          href="#"
+                          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                        >
+                          <span className="sr-only">Prev Page</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-3"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                    )}
+                    {paginationList}
+                    {paginations.current_page < paginations.total_page && (
+                      <li
+                        onClick={() =>
+                          getPostsByFilter(
+                            "",
+                            "",
+                            `page=${paginations.current_page + 1}`
+                          )
+                        }
                       >
-                        <path
-                          fillRule="evenodd"
-                          d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
-                          clipRule="evenodd"
-                        />
-                      </svg>
-                    </a>
-                  </li>
-                </ol>
-              </div>
+                        <a
+                          href="#"
+                          className="inline-flex size-8 items-center justify-center rounded border border-gray-100 bg-white text-gray-900 rtl:rotate-180"
+                        >
+                          <span className="sr-only">Next Page</span>
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="size-3"
+                            viewBox="0 0 20 20"
+                            fill="currentColor"
+                          >
+                            <path
+                              fillRule="evenodd"
+                              d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z"
+                              clipRule="evenodd"
+                            />
+                          </svg>
+                        </a>
+                      </li>
+                    )}
+                  </ol>
+                </div>
+              ) : (
+                ""
+              )}
             </div>
           </div>
         </div>

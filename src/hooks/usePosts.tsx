@@ -4,10 +4,24 @@ import instance from "../axios/instance";
 import { useNavigate, useParams } from "react-router-dom";
 import { loadingContext } from "../context/LoadingContext";
 
+type paginationType = {
+  current_page: number;
+  total_page: number;
+  page_size: number;
+  total: number;
+};
+
 const usePost = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [post, setPostDetail] = useState<IPost | undefined>();
   const [tags, setTags] = useState<string[]>([]);
+  const [paginations, setPaginations] = useState<paginationType>({
+    current_page: 0,
+    total_page: 0,
+    page_size: 0,
+    total: 0,
+  });
+
   const { id } = useParams();
   const navigate = useNavigate();
   const setLoading = loadingContext();
@@ -15,9 +29,41 @@ const usePost = () => {
   const getAllPosts = async () => {
     try {
       setLoading(true);
-      const {
-        data: { posts },
-      } = await instance.get("/posts");
+      const { data } = await instance.get("/posts");
+      const { posts } = data;
+      setPaginations({
+        current_page: data.current_page,
+        total_page: data.total_page,
+        page_size: data.page_size,
+        total: data.total,
+      });
+      console.log(data);
+
+      setPosts(posts);
+    } catch (error) {
+      navigate("/sign-in");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const getPostsByFilter = async (
+    title: string,
+    tags: string,
+    page: string
+  ) => {
+    try {
+      setLoading(true);
+      const { data } = await instance.get(`/posts?${title}&${tags}&${page}`);
+      const { posts } = data;
+      setPaginations({
+        current_page: data.current_page,
+        total_page: data.total_page,
+        page_size: data.page_size,
+        total: data.total,
+      });
+      console.log(data);
+
       setPosts(posts);
     } catch (error) {
       navigate("/sign-in");
@@ -111,6 +157,8 @@ const usePost = () => {
     postPost,
     patchPost,
     deletePost,
+    paginations,
+    getPostsByFilter,
   };
 };
 
