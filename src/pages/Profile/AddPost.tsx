@@ -4,9 +4,7 @@ import IPost from "../../interfaces/IPost";
 
 const AddPost = () => {
   const { postPost } = usePost();
-
   const handlerSubmit = (data: IPost) => {
-    data.tags = data.tags.map((tag) => ({ tag })) as [];
     postPost(data);
   };
 
@@ -14,7 +12,7 @@ const AddPost = () => {
     <>
       <div>
         <h1 className="mb-5 text-4xl">Add Post</h1>
-        <PostForm handlerSubmit={handlerSubmit} />
+        <PostForm handlerSubmitForm={handlerSubmit} />
       </div>
     </>
   );

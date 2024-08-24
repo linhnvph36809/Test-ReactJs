@@ -50,30 +50,36 @@ const Header = () => {
               overflow-hidden transition-all`}
           >
             <ul className="flex flex-col px-6 py-8 gap-y-4">
-              <li>
-                <a
-                  className="text-white font-bold active:text-[#9c69e2]"
-                  href="#"
-                >
-                  Profile
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-white font-bold active:text-[#9c69e2]"
-                  href="#"
-                >
-                  Logout
-                </a>
-              </li>
-              <li>
-                <a
-                  className="text-white font-bold active:text-[#9c69e2]"
-                  href="#"
-                >
-                  Sign In
-                </a>
-              </li>
+              {token ? (
+                <>
+                  <li>
+                    <Link
+                      className="text-white font-bold active:text-[#9c69e2]"
+                      to="/profile"
+                    >
+                      Profile
+                    </Link>
+                  </li>
+                  <li>
+                    <a
+                      className="text-white font-bold active:text-[#9c69e2]"
+                      href="#"
+                      onClick={logout}
+                    >
+                      Logout
+                    </a>
+                  </li>
+                </>
+              ) : (
+                <li>
+                  <Link
+                    className="text-white font-bold active:text-[#9c69e2]"
+                    to="/sign-in"
+                  >
+                    Sign In
+                  </Link>
+                </li>
+              )}
             </ul>
           </div>
         </div>

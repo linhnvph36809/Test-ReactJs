@@ -2,35 +2,53 @@ import { Link } from "react-router-dom";
 import ButtonPrimary from "../../components/ButtonPrimary";
 import usePost from "../../hooks/usePosts";
 import { ICON_DELETE, ICON_UPDATE } from "../../datas";
-import { ReactNode, useState } from "react";
+import { ReactNode, useCallback, useState } from "react";
+
+const innitPage = 1;
 
 const Profile = () => {
   const { posts, tags, paginations, deletePost, getPostsByFilter } = usePost();
-  const [search, setSearch] = useState<{ title: string; tags: string }>({
+  const [params, setParams] = useState<{ title: string; tags: string }>({
     title: "",
     tags: "",
   });
-  const innitPage = 1;
   const paginationList: ReactNode[] = [];
+
+  const handlerGetPostsByFilter = useCallback(
+    (title: string, tags: string, page: number = 0) => {
+      let params = [];
+      title && params.push(`title=${encodeURIComponent(title)}`);
+      tags && params.push(`tags=${encodeURIComponent(tags)}`);
+      page && params.push(`page=${encodeURIComponent(page)}`);
+      getPostsByFilter(params.join("&"));
+    },
+    []
+  );
+
+  const handlerSearchInput = (value: string) => {
+    setParams((state) => ({ ...state, title: value }));
+    handlerGetPostsByFilter(value, params.tags);
+  };
+
+  const handlerSearchSelect = (value: string) => {
+    setParams((state) => ({ ...state, tags: value }));
+    handlerGetPostsByFilter(params.title, value);
+  };
 
   const handlerListPaginations = () => {
     for (let i = innitPage; i <= paginations.total_page; i++) {
       paginationList.push(
-        <li>
+        <li key={i}>
           <a
             href="#"
             className={`block size-8 rounded border ${
               i === paginations.current_page
-                ? "border-blue-500 bg-blue-500 text-white"
+                ? "border-[#9c69e2] bg-[#9c69e2] text-white"
                 : "border-gray-100 bg-white text-gray-900"
             }
             text-center leading-8 `}
             onClick={() =>
-              getPostsByFilter(
-                `${search.title ? "title=" + search.title : ""}`,
-                `${search.tags ? "tags=" + search.tags : ""}`,
-                `page=${i}`
-              )
+              handlerGetPostsByFilter(params.title, params.tags, i)
             }
           >
             {i}
@@ -41,25 +59,11 @@ const Profile = () => {
   };
   handlerListPaginations();
 
-  const handlerSearchInput = (value: string) => {
-    setSearch((state) => ({ ...state, title: value }));
-    getPostsByFilter(
-      `title=${value}`,
-      `${search.tags ? "tags=" + search.tags : ""}`,
-      ""
-    );
-  };
-
-  const handlerSearchSelect = (value: string) => {
-    setSearch((state) => ({ ...state, tags: value }));
-    getPostsByFilter("title=" + search.title, `tags=${value}`, "");
-  };
-
   return (
     <>
       <div>
-        <div className="flex justify-between items-center sm:gap-2">
-          <Link to="/profile/add">
+        <div className="flex sm:justify-between md:justify-start lg:justify-between items-center sm:gap-2">
+          <Link to="/profile/add" id="RouterNavLink">
             <ButtonPrimary
               title="Add new"
               typeElement="button"
@@ -68,7 +72,7 @@ const Profile = () => {
             />
           </Link>
           <form className="">
-            <div className="flex-1 grid grid-cols-2 justify-between items-center sm:gap-3 lg:gap-5">
+            <div className="flex-1 grid sm:grid-cols-1 md:grid-cols-2 justify-between items-center sm:gap-3 lg:gap-5">
               <input
                 type="text"
                 id="first_name"
@@ -84,7 +88,7 @@ const Profile = () => {
                 text-black text-[15px] rounded-[6px] p-2.5"
                 onChange={(e) => handlerSearchSelect(e.target.value)}
               >
-                <option value={""}>Choose a tags</option>
+                <option value={""}>All</option>
                 {tags.map((tag, i) => (
                   <option key={i} value={tag}>
                     {tag}
@@ -159,10 +163,10 @@ const Profile = () => {
                     {paginations.current_page != innitPage && (
                       <li
                         onClick={() =>
-                          getPostsByFilter(
-                            "",
-                            "",
-                            `page=${paginations.current_page - 1}`
+                          handlerGetPostsByFilter(
+                            params.title,
+                            params.tags,
+                            --paginations.current_page
                           )
                         }
                       >
@@ -190,10 +194,10 @@ const Profile = () => {
                     {paginations.current_page < paginations.total_page && (
                       <li
                         onClick={() =>
-                          getPostsByFilter(
-                            "",
-                            "",
-                            `page=${paginations.current_page + 1}`
+                          handlerGetPostsByFilter(
+                            params.title,
+                            params.tags,
+                            ++paginations.current_page
                           )
                         }
                       >

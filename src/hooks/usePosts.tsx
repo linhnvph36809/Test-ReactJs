@@ -11,16 +11,19 @@ type paginationType = {
   total: number;
 };
 
+const innitPaginations = {
+  current_page: 0,
+  total_page: 0,
+  page_size: 0,
+  total: 0,
+};
+
 const usePost = () => {
   const [posts, setPosts] = useState<IPost[]>([]);
   const [post, setPostDetail] = useState<IPost | undefined>();
   const [tags, setTags] = useState<string[]>([]);
-  const [paginations, setPaginations] = useState<paginationType>({
-    current_page: 0,
-    total_page: 0,
-    page_size: 0,
-    total: 0,
-  });
+  const [paginations, setPaginations] =
+    useState<paginationType>(innitPaginations);
 
   const { id } = useParams();
   const navigate = useNavigate();
@@ -37,8 +40,6 @@ const usePost = () => {
         page_size: data.page_size,
         total: data.total,
       });
-      console.log(data);
-
       setPosts(posts);
     } catch (error) {
       navigate("/sign-in");
@@ -47,14 +48,10 @@ const usePost = () => {
     }
   };
 
-  const getPostsByFilter = async (
-    title: string,
-    tags: string,
-    page: string
-  ) => {
+  const getPostsByFilter = async (params: string) => {
     try {
       setLoading(true);
-      const { data } = await instance.get(`/posts?${title}&${tags}&${page}`);
+      const { data } = await instance.get(`/posts?${params}`);
       const { posts } = data;
       setPaginations({
         current_page: data.current_page,
@@ -91,10 +88,9 @@ const usePost = () => {
         const {
           data: { posts },
         } = await instance.get("/posts");
-
-        const newData = posts.find((post: IPost) => post.id == id);
-        newData.tags = newData.tags.map((item: any) => item.tag);
-        setPostDetail(newData);
+        const newDatas = posts.find((post: IPost) => post.id == id);
+        newDatas.tags = newDatas.tags.map((item: any) => item.tag);
+        setPostDetail(newDatas);
       }
     } catch (error) {
       navigate("/profile");

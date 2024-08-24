@@ -9,13 +9,15 @@ const LayoutProfile = () => {
 
   return (
     <>
-      <div className="flex sm:py-5 sm:px-3 xl:p-0">
+      <div className="md:flex sm:py-5 sm:px-3 xl:p-0">
         <div
           className={`fixed top-0 left-0 overflow-hidden bottom-0 transtion-all duration-200 ease-linear ${
             isActive ? "sm:w-[150px] md:w-[200px]" : "w-0"
           } xl:w-[320px] bg-[#D9D9D9] py-6 z-[100]`}
         >
-          <div className="flex justify-center mb-6">{ICON_LOGO}</div>
+          <Link to={"/"}>
+            <div className="flex justify-center mb-6">{ICON_LOGO}</div>
+          </Link>
           <div>
             <ul className="px-6">
               <Link to="">
@@ -33,7 +35,7 @@ const LayoutProfile = () => {
           </div>
         </div>
         <div
-          className="xl:hidden mt-3 mr-5"
+          className="xl:hidden mt-3 sm:mb-5 mr-5"
           onClick={() => setIsActive((state) => !state)}
         >
           {ICON_MENU}

@@ -9,8 +9,9 @@ import AddPost from "./pages/Profile/AddPost";
 import UpdatePost from "./pages/Profile/UpdatePost";
 
 const Router = () => {
+  const refreshToken = localStorage.getItem("refreshToken");
   const token = localStorage.getItem("token");
-  
+
   const router = useRoutes([
     {
       path: "",
@@ -28,7 +29,8 @@ const Router = () => {
     },
     {
       path: "profile",
-      element: token ? <LayoutProfile /> : <Navigate to="/sign-in" />,
+      element:
+        refreshToken || token ? <LayoutProfile /> : <Navigate to="/sign-in" />,
       children: [
         {
           path: "",
@@ -43,6 +45,10 @@ const Router = () => {
           element: <UpdatePost />,
         },
       ],
+    },
+    {
+      path: "*",
+      element: <h1 className="text-center"> 404 Not found</h1>,
     },
   ]);
 

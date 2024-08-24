@@ -4,9 +4,7 @@ import IPost from "../../interfaces/IPost";
 
 const UpdatePost = () => {
   const { patchPost, post } = usePost();
-
   const handlerSubmit = (data: IPost) => {
-    data.tags = data.tags.map((tag) => ({ tag })) as [];
     patchPost(data);
   };
 
@@ -14,7 +12,7 @@ const UpdatePost = () => {
     <>
       <div>
         <h1 className="mb-5 text-4xl">Update Post</h1>
-        <PostForm handlerSubmit={handlerSubmit} defaultValue={post} />
+        <PostForm handlerSubmitForm={handlerSubmit} defaultValue={post} />
       </div>
     </>
   );

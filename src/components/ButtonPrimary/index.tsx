@@ -15,7 +15,7 @@ const ButtonPrimary = ({
   typeElement = "button",
   ...props
 }: ButtonPrimaryProps) => {
-  const className = `lg:h-[59.63px] bg-primary flex justify-center text-white items-center gap-x-[20px] rounded-[50px]
+  const className = `sm:h-[39.63px] lg:h-[59.63px] bg-primary flex justify-center text-white items-center gap-x-[20px] rounded-[50px]
   font-bold md:text-base px-4 font-button hover:bg-[#9059db] transtion-all ${propsclassName}`;
   const Element = typeElement;
   return (

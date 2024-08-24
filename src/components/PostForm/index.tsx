@@ -5,11 +5,11 @@ import usePost from "../../hooks/usePosts";
 import { useEffect } from "react";
 
 type TypePostForm = {
-  handlerSubmit: (data: IPost) => void;
+  handlerSubmitForm: (data: IPost) => void;
   defaultValue?: IPost;
 };
 
-const PostForm = ({ handlerSubmit, defaultValue }: TypePostForm) => {
+const PostForm = ({ handlerSubmitForm, defaultValue }: TypePostForm) => {
   const { tags } = usePost();
 
   const {
@@ -24,7 +24,10 @@ const PostForm = ({ handlerSubmit, defaultValue }: TypePostForm) => {
     reset(defaultValue);
   }, [defaultValue]);
 
-  const onSubmit: SubmitHandler<IPost> = handlerSubmit;
+  const onSubmit: SubmitHandler<IPost> = (data) => {
+    data.tags = data.tags.map((tag) => ({ tag })) as [];
+    handlerSubmitForm(data);
+  };
 
   return (
     <>
